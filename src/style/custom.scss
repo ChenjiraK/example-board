@@ -6,3 +6,18 @@
         width: 0px;
     }
 }
+.content-detail-height {
+    height: calc(100vh - 60px);
+    margin-top: -20px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+        display: none;
+        width: 0px;
+    }
+}
+.login-logo {
+    @apply h-50dvh flex flex-col justify-center items-center rounded-b-xl bg-green-2B5F44
+}
+.login-desktop-logo {
+    @apply sm:h-screen sm:w-2/3 sm:rounded-b-none sm:rounded-l-xl
+}

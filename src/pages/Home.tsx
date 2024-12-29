@@ -1,13 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Board from '../components/Board.tsx'
+import MainPage from '../components/Input/MainPage.tsx';
 import SearchInput from '../components/Input/SearchInput.tsx';
 import MenuDropdown from '../components/Input/MenuDropdown.tsx';
 import MainButton from '../components/Button/MainButton.tsx';
 import "../style/custom.scss";
 
 const Home: React.FC = () => {
+   const navigator = useNavigate();
+   const pages = [{},{},{},{},{}];
    const communityList = [
       {
          text: 'History',
@@ -38,46 +42,43 @@ const Home: React.FC = () => {
          value: 'others',
       }
    ]
+   function goToDetail(id: number){
+      navigator(`/detail/${id}`)
+   }
    return (
-      <div className='w-main-page px-6'>
-         <div className='flex items-center'>
-            <div className='flex-grow'>
-               <SearchInput />
-            </div>
-            <div className='mx-4'>
-               <MenuDropdown 
-                  dropdownList={communityList} 
-                  onChangeItem={(item:any) => console.log(item)}
-                  onClickDropdown={(item:any) => console.log(item)}
-               >
-                  <div className='flex'>
-                     <p className='pr-3'>Community</p>
-                     <Icon className='self-center text-12' icon={faChevronDown} />
-                  </div>
-               </MenuDropdown>
-            </div>
-            <div>
-               <MainButton onClick={() => {}}>Create +</MainButton>
-            </div>
-         </div>
-         <div className='bg-white rounded-t-lg mt-4 content-height'>
-            <div className=''>
-               <div className='border-b'>
-                  <Board></Board>
+      <MainPage>
+         <div className='w-main-page px-6'>
+            <div className='flex items-center'>
+               <div className='flex-grow'>
+                  <SearchInput />
                </div>
-               <div className='border-b'>
-                  <Board></Board>
+               <div className='mx-4'>
+                  <MenuDropdown 
+                     dropdownList={communityList} 
+                     onChangeItem={(item:any) => console.log(item)}
+                     onClickDropdown={(item:any) => console.log(item)}
+                  >
+                     <div className='flex'>
+                        <p className='pr-3'>Community</p>
+                        <Icon className='self-center text-12' icon={faChevronDown} />
+                     </div>
+                  </MenuDropdown>
                </div>
-               <div className='border-b'>
-                  <Board></Board>
+               <div>
+                  <MainButton onClick={() => {}}>Create +</MainButton>
                </div>
-               <div className='border-b'>
-                  <Board></Board>
+            </div>
+            <div className='bg-white rounded-t-lg mt-4 content-height'>
+               <div className=''>
+                  {pages.map((_, i) => (
+                     <div className='border-b cursor-pointer' onClick={() => goToDetail(i)}>
+                        <Board isShowFavorite={true}></Board>
+                     </div>
+                  ))}
                </div>
             </div>
          </div>
-         
-      </div>
+      </MainPage>
    );
 };
 

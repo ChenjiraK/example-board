@@ -2,7 +2,7 @@
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-const SearchInput : React.FC = ({ }) =>{
+const SearchInput : React.FC = () =>{
    return(
       <div className={"flex gap-4 w-full relative"}>
          <input 

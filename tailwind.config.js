@@ -16,11 +16,11 @@ module.exports = {
         'gray-4A4A4A': '#4A4A4A',
         'gray-121212': '#121212',
         'gray-707070': '#707070',
-        'gray-F3F3F3': '#F3F3F3',
         'gray-BBC2C0': '#BBC2C0',
 
         'primary': "#243831",
         'success': "#49A569",
+        'green-2B5F44': "#2B5F44"
       },
       width: {
         '200px': '200px',
@@ -31,6 +31,7 @@ module.exports = {
         '1220px': '1220px',
       },
       height: {
+        '50dvh': '50dvh',
         '60px': '60px',
         '72px': '72px',
         '178px': '178px',

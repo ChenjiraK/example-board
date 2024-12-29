@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useRoutes, useLocation, RouteObject } from "react-router-dom";
 /** pages */
 import Home from "../pages/Home.tsx";
-// import GroupUser from "../pages/GroupUser.tsx";
-
+import Login from "../pages/Login.tsx";
+import CommentDetails from "../pages/CommentDetails.tsx";
 const routes: RouteObject[] = [
    {
       path: "/",
@@ -13,10 +13,14 @@ const routes: RouteObject[] = [
       path: "/home",
       element: <Home />,
    },
-    // {
-    //     path: "/group-data",
-    //     element: <GroupUser />,
-    // },
+   {
+      path: "/detail/:id",
+      element: <CommentDetails />,
+   },
+   {
+      path: "/login",
+      element: <Login />,
+   },
 ];
 
 const Routes: React.FC = () => {
