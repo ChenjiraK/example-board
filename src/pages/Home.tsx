@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -7,11 +7,13 @@ import MainPage from '../components/Input/MainPage.tsx';
 import SearchInput from '../components/Input/SearchInput.tsx';
 import MenuDropdown from '../components/Input/MenuDropdown.tsx';
 import MainButton from '../components/Button/MainButton.tsx';
+import CreatePostModal from '../components/Modals/CreatePostModal.tsx';
 import "../style/custom.scss";
 
 const Home: React.FC = () => {
    const navigator = useNavigate();
-   const pages = [{},{},{},{},{}];
+   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+   const pages = [{},{},{},{}];
    const communityList = [
       {
          text: 'History',
@@ -45,6 +47,17 @@ const Home: React.FC = () => {
    function goToDetail(id: number){
       navigator(`/detail/${id}`)
    }
+   function handleConfirm() {
+      console.log('confirm');
+      setIsModalOpen(false);
+    }
+   function handleCancel() {
+      console.log('cancel');
+      setIsModalOpen(false);
+   }
+   function showModalCreatePost() {
+      setIsModalOpen(true);
+   }
    return (
       <MainPage>
          <div className='w-main-page px-6'>
@@ -65,19 +78,24 @@ const Home: React.FC = () => {
                   </MenuDropdown>
                </div>
                <div>
-                  <MainButton onClick={() => {}}>Create +</MainButton>
+                  <MainButton onClick={() => showModalCreatePost()}>Create +</MainButton>
                </div>
             </div>
-            <div className='bg-white rounded-t-lg mt-4 content-height'>
+            <div className='bg-white rounded-lg mt-4 content-height'>
                <div className=''>
                   {pages.map((_, i) => (
-                     <div className='border-b cursor-pointer' onClick={() => goToDetail(i)}>
+                     <div key={`home_page_${i}`} className='border-b cursor-pointer' onClick={() => goToDetail(i)}>
                         <Board isShowFavorite={true}></Board>
                      </div>
                   ))}
                </div>
             </div>
          </div>
+         <CreatePostModal
+            isOpen={isModalOpen}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+         />
       </MainPage>
    );
 };

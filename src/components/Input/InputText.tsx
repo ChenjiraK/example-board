@@ -22,7 +22,7 @@ const InputText: React.FC<InputTextProps> = ({ onChange, placeholder = '' }) => 
             value={inputValue}
             onChange={onChangeInput}
             placeholder={placeholder}
-            className="rounded-lg bg-white border border-white py-2 px-3 w-full placeholder:text-gray-939494" 
+            className="rounded-lg bg-white border py-2 px-3 w-full placeholder:text-gray-939494" 
          />
       </div>
    );

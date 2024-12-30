@@ -1,5 +1,5 @@
 .content-height {
-    height: calc(100vh - 140px);
+    max-height: calc(100vh - 140px);
     overflow: auto;
     &::-webkit-scrollbar {
         display: none;

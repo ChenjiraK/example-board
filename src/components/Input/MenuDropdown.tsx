@@ -48,7 +48,7 @@ const MenuDropdown : React.FC<MenuDropdownProps> = ({ children, dropdownList, on
         return (<>
             {showList && dropdownList &&
                 <div ref={elemDDLListArea}
-                    className={`absolute rounded-md shadow-md ${ customClass ? customClass : 'left-0 w-40' } bg-white top-7 border overflow-hidden z-10 `}>
+                    className={`absolute rounded-md shadow-md ${ customClass ? customClass : 'left-0 w-40 top-7' } bg-white border overflow-hidden z-10 `}>
                     <div className="min-h-fit overflow-y-auto hide-scroll py-2">
                         {dropdownList.map((item, index) => (
                             <div key={`dropdown_${index}`} className="py-2 px-4 cursor-pointer text-gray-121212 hover:bg-success hover:bg-opacity-20" 

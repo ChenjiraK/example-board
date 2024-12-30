@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
-import { faStar, faComment } from '@fortawesome/free-regular-svg-icons';
+import {
+  faStar,
+  faComment,
+  faEdit,
+  faTrashAlt,
+} from '@fortawesome/free-regular-svg-icons';
 import { faStar as starSolid } from '@fortawesome/free-solid-svg-icons';
 import MainOutlineButton from './Button/MainOutlineButton.tsx';
 import MainButton from './Button/MainButton.tsx';
@@ -10,27 +15,33 @@ type BoardProps = {
   isShowCommentDefault?: boolean;
   isShowFavorite?: boolean;
   isShowAddCommentBtn?: boolean;
+  isShowEdit?: boolean;
   onClickAddComment?: () => void;
+  onDelete?: () => void;
+  onEdit?: () => void;
 };
 
 const Board: React.FC<BoardProps> = ({
   isShowCommentDefault = false,
   isShowFavorite = false,
   isShowAddCommentBtn = false,
+  isShowEdit = false,
   onClickAddComment,
+  onDelete,
+  onEdit,
 }) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [isShowComment, setIsShowComment] = useState<boolean>(false);
   const [comment, setComment] = useState('');
   const [isShowCommentInput, setIsShowCommentInput] = useState<boolean>(false);
 
-   useEffect(() => {
-      setIsShowComment(isShowCommentDefault);
-   }, [isShowCommentDefault]);
+  useEffect(() => {
+    setIsShowComment(isShowCommentDefault);
+  }, [isShowCommentDefault]);
 
-   const isDisabled = useMemo(() => {
-      return Boolean(!comment);
-   }, [comment]);
+  const isDisabled = useMemo(() => {
+    return Boolean(!comment);
+  }, [comment]);
 
   const CommentsComponent = () => {
     return (
@@ -60,11 +71,11 @@ const Board: React.FC<BoardProps> = ({
   }
   function handleCancel() {
     setIsShowCommentInput(false);
-    setComment('')
+    setComment('');
   }
   function handleSubmit() {
     setIsShowCommentInput(false);
-    setComment('')
+    setComment('');
   }
   return (
     <div className="p-5">
@@ -92,6 +103,24 @@ const Board: React.FC<BoardProps> = ({
                 onClick={() => setIsFavorite(true)}
               />
             )}
+          </div>
+        )}
+        {isShowEdit && (
+          <div className="flex">
+            <div>
+              <Icon
+                className="text-18 text-gray-939494 cursor-pointer px-3"
+                icon={faEdit}
+                onClick={onEdit}
+              />
+            </div>
+            <div>
+              <Icon
+                className="text-18 text-gray-939494 cursor-pointer"
+                icon={faTrashAlt}
+                onClick={onDelete}
+              />
+            </div>
           </div>
         )}
       </div>
@@ -131,14 +160,14 @@ const Board: React.FC<BoardProps> = ({
           <InputTextArea onChange={setComment} />
           <div className="flex justify-end space-x-2 mt-1">
             <div className="w-32">
-               <MainOutlineButton onClick={handleCancel}>
-                  Cancel
-               </MainOutlineButton>
+              <MainOutlineButton onClick={handleCancel}>
+                Cancel
+              </MainOutlineButton>
             </div>
             <div className="w-32">
-               <MainButton isDisabled={isDisabled} onClick={handleSubmit}>
-                  Post
-               </MainButton>
+              <MainButton isDisabled={isDisabled} onClick={handleSubmit}>
+                Post
+              </MainButton>
             </div>
           </div>
         </div>

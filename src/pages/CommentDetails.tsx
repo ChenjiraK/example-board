@@ -15,7 +15,7 @@ const CommentDetails: React.FC = () => {
     console.log('cancel');
     setIsModalOpen(false);
   }
-  function onClickAddComment() {
+  function showModalAddComment() {
     console.log('onclick comment');
     setIsModalOpen(true);
   }
@@ -27,7 +27,7 @@ const CommentDetails: React.FC = () => {
             <Board
               isShowCommentDefault={true}
               isShowAddCommentBtn={true}
-              onClickAddComment={onClickAddComment}
+              onClickAddComment={showModalAddComment}
             ></Board>
           </div>
         </div>

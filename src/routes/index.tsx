@@ -1,26 +1,31 @@
-import React, { useEffect } from "react";
-import { useRoutes, useLocation, RouteObject } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useRoutes, useLocation, RouteObject } from 'react-router-dom';
 /** pages */
-import Home from "../pages/Home.tsx";
-import Login from "../pages/Login.tsx";
-import CommentDetails from "../pages/CommentDetails.tsx";
+import Home from '../pages/Home.tsx';
+import OurBlog from '../pages/OurBlog.tsx';
+import Login from '../pages/Login.tsx';
+import CommentDetails from '../pages/CommentDetails.tsx';
 const routes: RouteObject[] = [
-   {
-      path: "/",
-      element: <Home />,
-   },
-   {
-      path: "/home",
-      element: <Home />,
-   },
-   {
-      path: "/detail/:id",
-      element: <CommentDetails />,
-   },
-   {
-      path: "/login",
-      element: <Login />,
-   },
+  {
+    path: '/',
+    element: <Home />,
+  },
+  {
+    path: '/home',
+    element: <Home />,
+  },
+  {
+    path: '/our-blog',
+    element: <OurBlog />,
+  },
+  {
+    path: '/detail/:id',
+    element: <CommentDetails />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
 ];
 
 const Routes: React.FC = () => {
