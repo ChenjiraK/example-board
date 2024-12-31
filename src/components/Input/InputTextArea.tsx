@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { emits } from '../../helper/EmitData';
 
 type InputTextAreaProps = {
    onChange: (value: string) => void;
+   inputValue?: string;
 };
 
-const InputTextArea: React.FC<InputTextAreaProps> = ({ onChange }) => {
-    const [inputValue, setValue] = useState('');
+const InputTextArea: React.FC<InputTextAreaProps> = ({ onChange, inputValue = '' }) => {
+    const [content, setValue] = useState('');
 
     function onChangeInput(e: React.ChangeEvent<HTMLTextAreaElement>) {
         const value = e.target.value;
@@ -14,10 +15,14 @@ const InputTextArea: React.FC<InputTextAreaProps> = ({ onChange }) => {
         emits(onChange, value);
     }
 
+    useEffect(() => {
+        setValue(inputValue);
+    }, [inputValue]);
+
     return (
         <div>
             <textarea
-                value={inputValue}
+                value={content}
                 onChange={onChangeInput}
                 className='min-h-28 w-full border rounded-md p-2' 
                 placeholder='What`s on your mind...' />

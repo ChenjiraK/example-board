@@ -10,22 +10,29 @@ import { faStar as starSolid } from '@fortawesome/free-solid-svg-icons';
 import MainOutlineButton from './Button/MainOutlineButton.tsx';
 import MainButton from './Button/MainButton.tsx';
 import InputTextArea from './Input/InputTextArea.tsx';
+import { IBlogResponse, ICommentResponse } from '../types/IParams';
+import { COMMUNITY_LIST } from '../constants/list';
 
 type BoardProps = {
   isShowCommentDefault?: boolean;
   isShowFavorite?: boolean;
   isShowAddCommentBtn?: boolean;
   isShowEdit?: boolean;
+  blog: IBlogResponse,
   onClickAddComment?: () => void;
   onDelete?: () => void;
   onEdit?: () => void;
 };
+type CommentProps = {
+  item:ICommentResponse
+}
 
 const Board: React.FC<BoardProps> = ({
   isShowCommentDefault = false,
   isShowFavorite = false,
   isShowAddCommentBtn = false,
   isShowEdit = false,
+  blog,
   onClickAddComment,
   onDelete,
   onEdit,
@@ -43,25 +50,28 @@ const Board: React.FC<BoardProps> = ({
     return Boolean(!comment);
   }, [comment]);
 
-  const CommentsComponent = () => {
+  const communityText = useMemo(() => {
+    const listfilter = COMMUNITY_LIST.find((item:any) => item.value === blog.communityId)
+    if(listfilter) {
+      return listfilter.text
+    }
+    return ''
+  }, [])
+
+  const CommentsComponent: React.FC<CommentProps> = ({item}) => {
     return (
       <div className="my-4 px-3">
         <div className="flex">
           <img
             className="w-8 h-8 rounded-full"
-            src={'https://picsum.photos/200'}
+            src={item.user?.imageUrl}
             alt="image-profile"
           />
-          <p className="self-center text-black px-5">firstname</p>
-          <p className="text-12 text-gray-300">12 ago</p>
+          <p className="self-center text-black px-5">{item.user?.name}</p>
+          <p className="self-center text-12 text-gray-300">12 ago</p>
         </div>
         <div className="pt-4 text-12">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum cum
-          obcaecati voluptate odit nulla recusandae iusto magnam doloribus
-          cumque quasi facere esse enim, placeat inventore cupiditate voluptas.
-          Incidunt placeat modi exercitationem nobis facere magnam! Sint,
-          maxime? Rem numquam ipsam aliquam dolores, voluptatum expedita
-          architecto at voluptatem non reiciendis, dolor quia.
+          {item.comment}
         </div>
       </div>
     );
@@ -83,10 +93,10 @@ const Board: React.FC<BoardProps> = ({
         <div className="flex">
           <img
             className="w-10 h-10 rounded-full"
-            src={'https://picsum.photos/200'}
+            src={blog.user?.imageUrl}
             alt="profile-comment"
           />
-          <p className="self-center text-gray-939494 px-5">firstname</p>
+          <p className="self-center text-gray-939494 px-5">{blog.user?.name}</p>
         </div>
         {isShowFavorite && (
           <div>
@@ -124,21 +134,26 @@ const Board: React.FC<BoardProps> = ({
           </div>
         )}
       </div>
-      <div className="bg-gray-F3F3F3 text-gray-4A4A4A rounded-3xl w-fit py-1 px-3 my-3 text-14">
-        History
-      </div>
-      <h3 className="text-black">Lorem ipsum dolor sit amet.</h3>
+      {
+        communityText && 
+        <div className="bg-gray-F3F3F3 text-gray-4A4A4A rounded-3xl w-fit py-1 px-3 my-3 text-14">
+          { communityText }
+        </div>
+      }
+      
+      <h3 className="text-black">{blog.title}</h3>
       <p className="text-black pt-2">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum commodi
-        aut vel quia sint facere dignissimos ipsam optio sit? Omnis.
+        {blog.content}
       </p>
-      <div
-        className="text-gray-939494 flex mt-5 cursor-pointer"
-        onClick={() => setIsShowComment(!isShowComment)}
-      >
-        <Icon className="text-16" icon={faComment} />
-        <span className="pl-1 text-12">32 comments</span>
-      </div>
+      {
+        blog.comments.length &&
+         <div className="text-gray-939494 flex mt-5 cursor-pointer"
+         onClick={() => setIsShowComment(!isShowComment)}>
+            <Icon className="text-16" icon={faComment} />
+            <span className="pl-1 text-12">{blog.comments.length} comments</span>
+         </div>
+      }
+      
       {!isShowCommentInput && isShowAddCommentBtn && (
         <>
           <div className="w-36 my-5">
@@ -174,10 +189,11 @@ const Board: React.FC<BoardProps> = ({
       )}
       {isShowComment && (
         <div>
-          <CommentsComponent />
-          <CommentsComponent />
-          <CommentsComponent />
-          <CommentsComponent />
+          {blog.comments.map((item, i) => (
+            <div key={`comment_${blog.id}_${i}`}>
+              <CommentsComponent item={item}/>
+            </div>
+          ))}
         </div>
       )}
     </div>

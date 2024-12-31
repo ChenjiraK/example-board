@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userStore from './store/UserStore';
+import blogStore from './store/BlogStore';
 
 const store = configureStore({
   reducer: {
-    users: userStore,
+    blogs: blogStore,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

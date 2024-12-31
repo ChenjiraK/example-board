@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { emits } from '../../helper/EmitData';
 
 type InputTextProps = {
    placeholder?: string;
    onChange: (value: string) => void;
+   inputValue?: string;
 };
 
-const InputText: React.FC<InputTextProps> = ({ onChange, placeholder = '' }) => {
-   const [inputValue, setValue] = useState('');
+const InputText: React.FC<InputTextProps> = ({ onChange, placeholder = '', inputValue = '' }) => {
+   const [content, setValue] = useState('');
 
    function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
       let value = e.target.value;
@@ -15,11 +16,15 @@ const InputText: React.FC<InputTextProps> = ({ onChange, placeholder = '' }) => 
       emits(onChange, value);
    }
 
+   useEffect(() => {
+      setValue(inputValue);
+   }, [inputValue]);
+
    return (
       <div>
          <input
             type='text'
-            value={inputValue}
+            value={content}
             onChange={onChangeInput}
             placeholder={placeholder}
             className="rounded-lg bg-white border py-2 px-3 w-full placeholder:text-gray-939494" 

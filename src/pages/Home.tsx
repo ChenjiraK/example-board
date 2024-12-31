@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Board from '../components/Board.tsx'
@@ -9,44 +8,20 @@ import MenuDropdown from '../components/Input/MenuDropdown.tsx';
 import MainButton from '../components/Button/MainButton.tsx';
 import CreatePostModal from '../components/Modals/CreatePostModal.tsx';
 import "../style/custom.scss";
+import { COMMUNITY_LIST } from '../constants/list';
+import { IBlogResponse } from '../types/IParams';
+//redux
+import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../redux/Store';
+import { getBlogs } from '../redux/actions/BlogAction';
 
 const Home: React.FC = () => {
-   const navigator = useNavigate();
+   const dispatch: AppDispatch = useDispatch();
+   const blogState = useSelector((state: RootState) => state.blogs);
+
    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-   const pages = [{},{},{},{}];
-   const communityList = [
-      {
-         text: 'History',
-         value: 'history',
-      },
-      {
-         text: 'Food',
-         value: 'food',
-      },
-      {
-         text: 'Pets',
-         value: 'pets',
-      },
-      {
-         text: 'Health',
-         value: 'health',
-      },
-      {
-         text: 'Fashion',
-         value: 'fashion',
-      },
-      {
-         text: 'Exercise',
-         value: 'exercise',
-      },
-      {
-         text: 'Others',
-         value: 'others',
-      }
-   ]
-   function goToDetail(id: number){
-      navigator(`/detail/${id}`)
-   }
+   const [blogs, setBlogsData] = useState<IBlogResponse[]>([]);
+   const communityList = COMMUNITY_LIST;
    function handleConfirm() {
       console.log('confirm');
       setIsModalOpen(false);
@@ -58,6 +33,17 @@ const Home: React.FC = () => {
    function showModalCreatePost() {
       setIsModalOpen(true);
    }
+   /** get data */
+   useEffect(() => {
+      dispatch(getBlogs()); 
+   }, [dispatch]);
+
+   /** mapping data from action api */
+   useEffect(() => {
+      if (blogState.list.isSuccess && blogState.list.data) {
+         setBlogsData(blogState.list.data);
+      }
+   }, [blogState]);
    return (
       <MainPage>
          <div className='w-main-page px-6'>
@@ -81,15 +67,20 @@ const Home: React.FC = () => {
                   <MainButton onClick={() => showModalCreatePost()}>Create +</MainButton>
                </div>
             </div>
-            <div className='bg-white rounded-lg mt-4 content-height'>
-               <div className=''>
-                  {pages.map((_, i) => (
-                     <div key={`home_page_${i}`} className='border-b cursor-pointer' onClick={() => goToDetail(i)}>
-                        <Board isShowFavorite={true}></Board>
+            {
+               blogState.list.loading ? <div className='text-center text-white pt-11'>Loading data...</div> 
+               : <>
+                  <div className='bg-white rounded-lg mt-4 content-height'>
+                     <div className=''>
+                        {blogs.map((item, i) => (
+                           <div key={`home_page_${i}`} className='border-b cursor-pointer'>
+                              <Board isShowFavorite={true} blog={item}></Board>
+                           </div>
+                        ))}
                      </div>
-                  ))}
-               </div>
-            </div>
+                  </div>
+               </>
+            }
          </div>
          <CreatePostModal
             isOpen={isModalOpen}
