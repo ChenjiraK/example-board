@@ -10,8 +10,8 @@ import CreatePostModal from '../components/Modals/CreatePostModal.tsx';
 import ConfirmDeleteModel from '../components/Modals/ConfirmDeleteModal.tsx';
 import '../style/custom.scss';
 import { COMMUNITY_LIST } from '../constants/list';
-import { IBlogResponse, IBlogParams } from '../types/IParams';
-import { transformerBlogParams } from '../transformers/transformerBlog';
+import { IBlog } from '../types/IParams';
+import { transformerBlogParams } from '../transformer/transformerBlog';
 //redux
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/Store';
@@ -20,8 +20,8 @@ import { getBlogs, updateBlog, createBlog, deleteBlog } from '../redux/actions/B
 const OurBlog: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const blogState = useSelector((state: RootState) => state.blogs);
-  const [blogs, setBlogsData] = useState<IBlogResponse[]>([]);
-  const [blog, setBlogItem] = useState<IBlogResponse | null>();
+  const [blogs, setBlogsData] = useState<IBlog[]>([]);
+  const [blog, setBlogItem] = useState<IBlog | null>();
   const [titlePostModal, setTitlePostModal] = useState<string>('Create Post');
   const [isModalCreateOpen, setIsModalPostOpen] = useState<boolean>(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
@@ -34,7 +34,7 @@ const OurBlog: React.FC = () => {
     } else {
       dispatch(createBlog({
         ...params,
-        user_id: 1
+        user: { id: 1 } //mock user_id from login
       }));
     }
   }
@@ -46,7 +46,7 @@ const OurBlog: React.FC = () => {
     setBlogItem(null);
     setIsModalPostOpen(true);
   }
-  function onClickEditBlog(itemBlog: IBlogResponse) {
+  function onClickEditBlog(itemBlog: IBlog) {
     setBlogItem(itemBlog);
     setTitlePostModal('Edit Post')
     setIsModalPostOpen(true);

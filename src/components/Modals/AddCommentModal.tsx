@@ -7,7 +7,7 @@ import MainOutlineButton from '../Button/MainOutlineButton';
 import { emits } from '../../helper/EmitData';
 interface ModalProps {
   isOpen: boolean;
-  onConfirm: () => void;
+  onConfirm: (value: string) => void;
   onCancel: () => void;
 }
 
@@ -27,7 +27,7 @@ const AddCommentModal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg shadow-lg w-96 p-6 relative">
-        <button className="absolute top-1 right-2" onClick={onConfirm}>
+        <button className="absolute top-1 right-2" onClick={onCancel}>
           <Icon className="text-black text-20" icon={faXmark} />
         </button>
         <h2 className="text-xl font-semibold text-gray-800">Add Comments</h2>

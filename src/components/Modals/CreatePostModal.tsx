@@ -9,13 +9,13 @@ import MainOutlineButton from '../Button/MainOutlineButton';
 import MenuDropdown from '../Input/MenuDropdown';
 import { emits } from '../../helper/EmitData';
 import { COMMUNITY_LIST } from '../../constants/list';
-import { IBlogResponse } from '../../types/IParams';
+import { IBlog } from '../../types/IParams';
 interface ModalProps {
   isOpen: boolean;
   onConfirm: (value: any) => void;
   onCancel: () => void;
-  formData?: IBlogResponse | null
-  titleHeader?: string
+  formData?: IBlog | null;
+  titleHeader?: string;
 }
 
 const CreatePostModal: React.FC<ModalProps> = ({
@@ -23,7 +23,7 @@ const CreatePostModal: React.FC<ModalProps> = ({
   onConfirm,
   onCancel,
   formData,
-  titleHeader = 'Create Post'
+  titleHeader = 'Create Post',
 }) => {
   const [message, setMessage] = useState('');
   const [title, setTitle] = useState('');
@@ -35,15 +35,17 @@ const CreatePostModal: React.FC<ModalProps> = ({
   }, [message]);
 
   const communityText = useMemo(() => {
-    const listfilter = COMMUNITY_LIST.find((item:any) => item.value === community)
-    if(listfilter) {
-      return listfilter.text
+    const listfilter = COMMUNITY_LIST.find(
+      (item: any) => item.value === community
+    );
+    if (listfilter) {
+      return listfilter.text;
     }
-    return 'Choose a community'
-  }, [community])
+    return 'Choose a community';
+  }, [community]);
 
   useEffect(() => {
-    if(formData) {
+    if (formData) {
       setTitle(formData?.title ?? '');
       setMessage(formData?.content ?? '');
       setCommunity(formData?.communityId ?? 0);
@@ -52,16 +54,15 @@ const CreatePostModal: React.FC<ModalProps> = ({
       setMessage('');
       setCommunity(null);
     }
-    
- }, [formData]);
+  }, [formData]);
 
   function onClickPost() {
     const params = {
       id: formData?.id,
       title,
       content: message,
-      communityId: community
-    }
+      communityId: community,
+    };
     emits(onConfirm, params);
   }
   if (!isOpen) return null;
@@ -71,7 +72,7 @@ const CreatePostModal: React.FC<ModalProps> = ({
         <button className="absolute top-1 right-2" onClick={onCancel}>
           <Icon className="text-black text-20" icon={faXmark} />
         </button>
-        <h2 className="text-xl font-semibold text-gray-800">{ titleHeader }</h2>
+        <h2 className="text-xl font-semibold text-gray-800">{titleHeader}</h2>
         <div className="my-4 border border-success rounded-md h-10 w-full sm:w-52 flex items-center justify-center">
           <MenuDropdown
             dropdownList={communityList}
@@ -80,7 +81,7 @@ const CreatePostModal: React.FC<ModalProps> = ({
             onClickDropdown={(item: any) => console.log(item)}
           >
             <div className="flex">
-              <p className="pr-3 text-success">{ communityText }</p>
+              <p className="pr-3 text-success">{communityText}</p>
               <Icon
                 className="self-center text-12 text-success"
                 icon={faChevronDown}
@@ -89,7 +90,11 @@ const CreatePostModal: React.FC<ModalProps> = ({
           </MenuDropdown>
         </div>
         <div className="my-2">
-          <InputText onChange={setTitle} inputValue={title} placeholder="Title" />
+          <InputText
+            onChange={setTitle}
+            inputValue={title}
+            placeholder="Title"
+          />
         </div>
         <div className="mt-2">
           <InputTextArea inputValue={message} onChange={setMessage} />

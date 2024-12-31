@@ -9,7 +9,7 @@ import MainButton from '../components/Button/MainButton.tsx';
 import CreatePostModal from '../components/Modals/CreatePostModal.tsx';
 import "../style/custom.scss";
 import { COMMUNITY_LIST } from '../constants/list';
-import { IBlogResponse } from '../types/IParams';
+import { IBlog } from '../types/IParams';
 //redux
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/Store';
@@ -20,7 +20,7 @@ const Home: React.FC = () => {
    const blogState = useSelector((state: RootState) => state.blogs);
 
    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-   const [blogs, setBlogsData] = useState<IBlogResponse[]>([]);
+   const [blogs, setBlogsData] = useState<IBlog[]>([]);
    const communityList = COMMUNITY_LIST;
    function handleConfirm() {
       console.log('confirm');
