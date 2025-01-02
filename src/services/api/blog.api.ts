@@ -4,6 +4,8 @@ export const apiGetBlogs = (params: any = {}) =>
   httpClient.get('/blogs', { params });
 export const apiGetBlogById = (id: string | number) =>
   httpClient.get(`/blogs/${id}`);
+export const apiGetMyBlogs = (params: any = {}) =>
+  httpClient.get(`/blogs/myblogs`, { params });
 export const apiPostBlog = (params: any) => httpClient.post('/blogs', params);
 export const apiPutBlog = (id: number, params: any) =>
   httpClient.put(`/blogs/${id}`, params);

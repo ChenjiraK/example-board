@@ -18,7 +18,6 @@ const CommentDetails: React.FC = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(id);
     if (id) {
       dispatch(getBlogById(id));
     }
@@ -34,7 +33,7 @@ const CommentDetails: React.FC = () => {
     const params = transformerCommentParams({
       comment: value,
       user: { id: 1 },
-      blog: { id: 1 },
+      blog: { id: id },
     });
     dispatch(createComment(params)).then(() => {
       if (id) {

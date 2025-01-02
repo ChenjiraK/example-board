@@ -1,47 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IBlog } from '../../types/IParams';
-import { transformerCommentResponse } from '../../transformer/transformerComment';
 interface CommentState {
-  data: {
-    data: IBlog | null;
-    loading: boolean;
-    isSuccess: boolean;
-    error: string | null;
-  };
   create: {
-    loading: boolean;
-    isSuccess: boolean;
-    error: string | null;
-  };
-  update: {
-    loading: boolean;
-    isSuccess: boolean;
-    error: string | null;
-  };
-  delete: {
     loading: boolean;
     isSuccess: boolean;
     error: string | null;
   };
 }
 const initialState: CommentState = {
-  data: {
-    data: null,
-    loading: false,
-    isSuccess: false,
-    error: null,
-  },
   create: {
-    loading: false,
-    isSuccess: false,
-    error: null,
-  },
-  update: {
-    loading: false,
-    isSuccess: false,
-    error: null,
-  },
-  delete: {
     loading: false,
     isSuccess: false,
     error: null,

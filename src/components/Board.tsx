@@ -114,54 +114,52 @@ const Board: React.FC<BoardProps> = ({
   }
   return (
     <div className="p-5">
-      <div onClick={goToDetail}>
-        <div className="flex justify-between">
-          <div className="flex">
-            <img
-              className="w-10 h-10 rounded-full"
-              src={blog.user?.imageUrl}
-              alt="profile-comment"
-            />
-            <p className="self-center text-gray-939494 px-5">
-              {blog.user?.name}
-            </p>
-          </div>
-          {isShowFavorite && (
-            <div>
-              {isFavorite ? (
-                <Icon
-                  className="text-18 text-yellow-400 cursor-pointer"
-                  icon={starSolid}
-                  onClick={() => setIsFavorite(false)}
-                />
-              ) : (
-                <Icon
-                  className="text-18 text-gray-939494 cursor-pointer"
-                  icon={faStar}
-                  onClick={() => setIsFavorite(true)}
-                />
-              )}
-            </div>
-          )}
-          {isShowEdit && (
-            <div className="flex">
-              <div>
-                <Icon
-                  className="text-18 text-gray-939494 cursor-pointer px-3"
-                  icon={faEdit}
-                  onClick={onEdit}
-                />
-              </div>
-              <div>
-                <Icon
-                  className="text-18 text-gray-939494 cursor-pointer"
-                  icon={faTrashAlt}
-                  onClick={onDelete}
-                />
-              </div>
-            </div>
-          )}
+      <div className="flex justify-between">
+        <div className="flex">
+          <img
+            className="w-10 h-10 rounded-full"
+            src={blog.user?.imageUrl}
+            alt="profile-comment"
+          />
+          <p className="self-center text-gray-939494 px-5">{blog.user?.name}</p>
         </div>
+        {isShowFavorite && (
+          <div>
+            {isFavorite ? (
+              <Icon
+                className="text-18 text-yellow-400 cursor-pointer"
+                icon={starSolid}
+                onClick={() => setIsFavorite(false)}
+              />
+            ) : (
+              <Icon
+                className="text-18 text-gray-939494 cursor-pointer"
+                icon={faStar}
+                onClick={() => setIsFavorite(true)}
+              />
+            )}
+          </div>
+        )}
+        {isShowEdit && (
+          <div className="flex">
+            <div>
+              <Icon
+                className="text-18 text-gray-939494 cursor-pointer px-3"
+                icon={faEdit}
+                onClick={onEdit}
+              />
+            </div>
+            <div>
+              <Icon
+                className="text-18 text-gray-939494 cursor-pointer"
+                icon={faTrashAlt}
+                onClick={onDelete}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+      <div onClick={goToDetail}>
         {communityText && (
           <div className="bg-gray-F3F3F3 text-gray-4A4A4A rounded-3xl w-fit py-1 px-3 my-3 text-14">
             {communityText}

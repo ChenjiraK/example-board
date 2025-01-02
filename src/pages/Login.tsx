@@ -1,20 +1,44 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import LogoImg from '../assets/image/logo-login.svg';
 import InputText from '../components/Input/InputText.tsx';
 import MainButton from '../components/Button/MainButton.tsx';
 import { useNavigate } from 'react-router-dom';
+import { transformerLoginParams } from '../transformer/tranformerUser';
+//redux
+import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../redux/Store';
+import { login } from '../redux/actions/AuthAction.tsx';
+import Cache from '../helper/Cache';
 
 const Login: React.FC = () => {
    const navigator = useNavigate();
    const [username, setUsername] = useState('');
+   const cache = new Cache('session');
+   //redux
+   const dispatch: AppDispatch = useDispatch();
+   const authState = useSelector((state: RootState) => state.auth);
 
    const isDisabled = useMemo(() => {
-      return Boolean(!username);
-   }, [username]);
+      if(!username) {
+         return true
+      } else if (authState.login.loading) {
+         return true
+      }
+      return false;
+   }, [authState.login.loading, username]);
 
-   function handleSubmit() {
+   useEffect(() => {
+      if(authState.login.isSuccess && authState.login.token) {
+         cache.setCache('token', authState.login.token);
+         goToHomePage();
+      }
+   // eslint-disable-next-line
+   }, [authState]);
+
+   async function handleSubmit() {
       if(isDisabled) return;
-      goToHomePage();
+      const params = transformerLoginParams({ username })
+      dispatch(login(params));
    }
    function goToHomePage() {
       navigator('/');
@@ -33,7 +57,9 @@ const Login: React.FC = () => {
                      <InputText onChange={setUsername} placeholder="Username" />
                   </div>
                   <div className="mt-4">
-                     <MainButton isDisabled={isDisabled} onClick={handleSubmit}>Sign in</MainButton>
+                     <MainButton isDisabled={isDisabled} onClick={handleSubmit}>
+                        {authState.login.loading ? 'Loading...' : 'Sign in'}
+                     </MainButton>
                   </div>
                </div>
             </div>

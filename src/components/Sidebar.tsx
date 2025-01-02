@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
@@ -18,6 +18,7 @@ const Sidebar: React.FC<MainButtonProps> = ({
   onClickMenu,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
+  let location = useLocation();
 
   useEffect(() => {
     setIsOpen(isShowMenu);
@@ -26,6 +27,13 @@ const Sidebar: React.FC<MainButtonProps> = ({
   function setIsShowMenu(status: boolean) {
     setIsOpen(status);
     emits(onClickMenu, status);
+  }
+
+  function isActiveMenu(path: string) {
+    if (location.pathname === path) {
+      return true;
+    }
+    return false;
   }
 
   const RightSidebar = () => {
@@ -46,7 +54,8 @@ const Sidebar: React.FC<MainButtonProps> = ({
             <Link
               to="/home"
               onClick={() => setIsShowMenu(false)}
-              className="block w-max py-2 text-white font-semibold hover:text-success"
+              className={`block w-max py-2 font-semibold hover:text-success 
+                ${isActiveMenu('/home') ? 'text-success' : 'text-white'}`}
             >
               <Icon icon={faHome} />
               <span className="pl-3">Home</span>
@@ -54,7 +63,8 @@ const Sidebar: React.FC<MainButtonProps> = ({
             <Link
               to="/our-blog"
               onClick={() => setIsShowMenu(false)}
-              className="block w-max py-2 text-white font-semibold hover:text-success"
+              className={`block w-max py-2 font-semibold hover:text-success 
+                ${isActiveMenu('/home') ? 'text-success' : 'text-white'}`}
             >
               <Icon icon={faPenToSquare} />
               <span className="pl-3">Our Blog</span>
@@ -75,14 +85,16 @@ const Sidebar: React.FC<MainButtonProps> = ({
       <div className="hidden sm:block mx-6">
         <Link
           to="/home"
-          className="block w-max py-2 text-gray-700 font-semibold hover:text-success"
+          className={`block w-max py-2 font-semibold hover:text-success 
+            ${isActiveMenu('/home') ? 'text-success' : 'text-gray-700'}`}
         >
           <Icon icon={faHome} />
           <span className="pl-3">Home</span>
         </Link>
         <Link
           to="/our-blog"
-          className="block w-max py-2 text-gray-700 font-semibold hover:text-success"
+          className={`block w-max py-2 font-semibold hover:text-success 
+            ${isActiveMenu('/our-blog') ? 'text-success' : 'text-gray-700'}`}
         >
           <Icon icon={faPenToSquare} />
           <span className="pl-3">Our Blog</span>

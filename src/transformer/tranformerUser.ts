@@ -16,3 +16,9 @@ export const transformerUserParams = (params: IUser) => {
         imageUrl: params.imageUrl ?? '',
     }
 }
+
+export const transformerLoginParams = (params: IUser) => {
+    return {
+        username: params.username
+    }
+}

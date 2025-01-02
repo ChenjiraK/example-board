@@ -1,8 +1,9 @@
 export type IBlog = {
-  id?: number | null;
+  id?: number | string | null;
   communityId?: number | null;
   title?: string | null;
   content?: string | null;
+  isFavorite?: boolean | null;
   updatedAt?: Date | string | null;
   createdAt?: Date | string | null;
   user?: IUser | null;

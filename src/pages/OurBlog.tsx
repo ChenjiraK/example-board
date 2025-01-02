@@ -11,11 +11,17 @@ import ConfirmDeleteModel from '../components/Modals/ConfirmDeleteModal.tsx';
 import '../style/custom.scss';
 import { COMMUNITY_LIST } from '../constants/list';
 import { IBlog } from '../types/IParams';
+import { IDropdownItem } from '../types/Interface';
 import { transformerBlogParams } from '../transformer/transformerBlog';
 //redux
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/Store';
-import { getBlogs, updateBlog, createBlog, deleteBlog } from '../redux/actions/BlogAction';
+import {
+  getBlogs,
+  updateBlog,
+  createBlog,
+  deleteBlog,
+} from '../redux/actions/BlogAction';
 
 const OurBlog: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -23,40 +29,46 @@ const OurBlog: React.FC = () => {
   const [blogs, setBlogsData] = useState<IBlog[]>([]);
   const [blog, setBlogItem] = useState<IBlog | null>();
   const [titlePostModal, setTitlePostModal] = useState<string>('Create Post');
+  const [community, setCommunity] = useState<IDropdownItem | null>(null);
   const [isModalCreateOpen, setIsModalPostOpen] = useState<boolean>(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
   const communityList = COMMUNITY_LIST;
-  function handleConfirmPostModal(value:any) {
-    const id = value.id as number
+  function handleConfirmPostModal(value: any) {
+    const id = value.id as number;
     const params = transformerBlogParams(value);
-    if(isEdit) {
+    if (isEdit) {
       dispatch(updateBlog(id, params));
     } else {
-      dispatch(createBlog({
-        ...params,
-        user: { id: 1 } //mock user_id from login
-      }));
+      dispatch(
+        createBlog({
+          ...params,
+          user: { id: 1 }, //mock user_id from login
+        })
+      );
     }
   }
   function handleConfirmDeleteModal() {
     setIsModalDeleteOpen(false);
+    if (blog && blog.id) {
+      dispatch(deleteBlog(blog.id));
+    }
   }
   function showModalCreatePost() {
-    setTitlePostModal('Create Post')
+    setTitlePostModal('Create Post');
     setBlogItem(null);
     setIsModalPostOpen(true);
   }
   function onClickEditBlog(itemBlog: IBlog) {
     setBlogItem(itemBlog);
-    setTitlePostModal('Edit Post')
+    setTitlePostModal('Edit Post');
     setIsModalPostOpen(true);
   }
-  function onClickDeleteBlog() {
+  function onClickDeleteBlog(itemBlog: IBlog) {
     setIsModalDeleteOpen(true);
-    //todo: delete data api
+    setBlogItem(itemBlog);
   }
   const isEdit = useMemo(() => {
-    if(titlePostModal.includes('Edit')) {
+    if (titlePostModal.includes('Edit')) {
       return true;
     }
     return false;
@@ -79,26 +91,32 @@ const OurBlog: React.FC = () => {
   }, [blogState]);
   //after create or update success
   useEffect(() => {
-    if (blogState.create.isSuccess || blogState.update.isSuccess) {
+    if (
+      blogState.create.isSuccess ||
+      blogState.update.isSuccess ||
+      blogState.delete.isSuccess
+    ) {
       setIsModalPostOpen(false);
-      dispatch(getBlogs({user_id: 1}));
+      dispatch(getBlogs({ user_id: 1 }));
     }
-  }, [blogState.create, blogState.update]);
+  }, [blogState.create, blogState.update, blogState.delete.isSuccess]);
   return (
     <MainPage>
       <div className="w-main-page px-6">
-        <div className="flex items-center">
-          <div className="flex-grow">
+        <div className="flex justify-between items-center w-full">
+          <div className="flex-grow w-full max-w-[500px]">
             <SearchInput />
           </div>
           <div className="mx-4">
             <MenuDropdown
               dropdownList={communityList}
-              onChangeItem={(item: any) => console.log(item)}
-              onClickDropdown={(item: any) => console.log(item)}
+              onChangeItem={(item: IDropdownItem) => setCommunity(item)}
+              onClickDropdown={() => {}}
             >
               <div className="flex">
-                <p className="pr-3">Community</p>
+                <p className="pr-3">
+                  {community ? community.text : 'Community'}
+                </p>
                 <Icon className="self-center text-12" icon={faChevronDown} />
               </div>
             </MenuDropdown>
@@ -120,12 +138,12 @@ const OurBlog: React.FC = () => {
                     key={`our_blog_page_${i}`}
                     className="border-b cursor-pointer"
                   >
-                    <Board 
-                      isShowEdit={true} 
-                      blog={item} 
-                      onDelete={onClickDeleteBlog} 
-                      onEdit={() => onClickEditBlog(item)}>
-                    </Board>
+                    <Board
+                      isShowEdit={true}
+                      blog={item}
+                      onDelete={() => onClickDeleteBlog(item)}
+                      onEdit={() => onClickEditBlog(item)}
+                    ></Board>
                   </div>
                 ))}
               </div>
@@ -137,7 +155,7 @@ const OurBlog: React.FC = () => {
         isOpen={isModalCreateOpen}
         formData={blog}
         titleHeader={titlePostModal}
-        onConfirm={(value:any) => handleConfirmPostModal(value)}
+        onConfirm={(value: any) => handleConfirmPostModal(value)}
         onCancel={() => setIsModalPostOpen(false)}
       />
       <ConfirmDeleteModel

@@ -23,6 +23,7 @@ import {
   apiPostBlog,
   apiPutBlog,
   apiDeleteBlog,
+  apiGetMyBlogs,
 } from '../../services/api/blog.api';
 import { IBlog } from '../../types/IParams';
 
@@ -51,6 +52,19 @@ export const getBlogById =
     }
   };
 
+export const getMyBlogs =
+  (params: any = {}) =>
+  async (dispatch: Dispatch) => {
+    dispatch(getBlogsStart());
+    try {
+      const response = await apiGetMyBlogs(params);
+      dispatch(getBlogsSuccess(response?.data));
+    } catch (err: any) {
+      dispatch(getBlogsFailure(err.message ?? 'Error fetch blogs'));
+      toast.error(err.message ?? 'Error fetch blogs');
+    }
+  };
+
 export const createBlog = (params: IBlog) => async (dispatch: Dispatch) => {
   dispatch(createBlogStart());
   try {
@@ -74,13 +88,14 @@ export const updateBlog =
     }
   };
 
-export const deleteBlog = (params: IBlog) => async (dispatch: Dispatch) => {
-  dispatch(deleteBlogStart());
-  try {
-    const response = await apiDeleteBlog(params);
-    dispatch(deleteBlogSuccess(response?.data));
-  } catch (err: any) {
-    dispatch(deleteBlogFailure(err.message ?? 'Error delete blog'));
-    toast.error(err.message ?? 'delete update blog');
-  }
-};
+export const deleteBlog =
+  (id: number | string) => async (dispatch: Dispatch) => {
+    dispatch(deleteBlogStart());
+    try {
+      const response = await apiDeleteBlog(id);
+      dispatch(deleteBlogSuccess(response?.data));
+    } catch (err: any) {
+      dispatch(deleteBlogFailure(err.message ?? 'Error delete blog'));
+      toast.error(err.message ?? 'delete update blog');
+    }
+  };
