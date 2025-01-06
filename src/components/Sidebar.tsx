@@ -8,12 +8,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { emits } from '../helper/EmitData';
 
-type MainButtonProps = {
+type MainSidebarProps = {
   isShowMenu?: boolean;
   onClickMenu?: (value: boolean) => void;
 };
 
-const Sidebar: React.FC<MainButtonProps> = ({
+const Sidebar: React.FC<MainSidebarProps> = ({
   isShowMenu = false,
   onClickMenu,
 }) => {
